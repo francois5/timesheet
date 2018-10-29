@@ -16,7 +16,7 @@ export default {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #34495e !important;
+    color: #fff !important;
     background-color: #fff;
     height: 100vh;
 }
@@ -46,5 +46,6 @@ export default {
 }
 .md-primary {
     background-color: #34495e !important;
+    color: #fff !important;
 }
 </style>

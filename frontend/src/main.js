@@ -8,10 +8,12 @@ import router from './router';
 import VueI18n from 'vue-i18n';
 
 import "vue-material-design-icons/styles.css";
-import { MdButton, MdCard, MdRipple, MdToolbar, MdContent, MdField, MdTable, MdMenu, MdList, MdSnackbar } from 'vue-material/dist/components';
+//import { MdButton, MdCard, MdRipple, MdToolbar, MdContent, MdField, MdTable, MdMenu, MdList, MdSnackbar } from 'vue-material/dist/components';
+import VueMaterial from 'vue-material';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/default.css';
 
+/*
 Vue.use(MdButton);
 Vue.use(MdCard);
 Vue.use(MdRipple);
@@ -22,6 +24,8 @@ Vue.use(MdTable);
 Vue.use(MdMenu);
 Vue.use(MdList);
 Vue.use(MdSnackbar);
+*/
+Vue.use(VueMaterial);
 Vue.use(VueI18n);
 
 Vue.config.productionTip = false;
