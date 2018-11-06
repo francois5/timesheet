@@ -14,10 +14,8 @@
 
 <script>
 import axios from 'axios';
-import router from '../router'
-  
-import TopBar from '../components/TopBar.vue'
 
+import TopBar from '../components/TopBar.vue'
 import Activity from '../components/Activity.vue'
   
 export default {
@@ -57,7 +55,7 @@ export default {
 	    localStorage.setItem('appData', JSON.stringify(this.appData));
 	},
 	back: function(e) {
-            router.push({ name: 'Dashboard' });
+            this.$router.push({ name: 'Dashboard' });
 	},
     },
 }

@@ -10,16 +10,15 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  import router from '../router'
-  
-  import TopBar from '../components/TopBar.vue'
-  
-  export default {
+import axios from 'axios';
+
+import TopBar from '../components/TopBar.vue'
+
+export default {
     name: 'Stats',
     data () {
-    return {
-  
+	return {
+	    
 	}
     },
     computed: {
@@ -29,15 +28,15 @@
 	TopBar
     },
     beforeMount() {
-
+	
     },
     beforeDestroy() {
         
     },
     methods: {
-      back: function(e) {
-        router.push({ name: 'Dashboard' });
-      },
+	back: function(e) {
+            this.$router.push({ name: 'Dashboard' });
+	},
     },
 }
 </script>

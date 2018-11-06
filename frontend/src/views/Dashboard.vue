@@ -14,7 +14,6 @@
 
 <script>
 import axios from 'axios';
-import router from '../router'
 
 import TopBar from '../components/TopBar.vue'
 
@@ -43,13 +42,12 @@ export default {
 	    //var appData = JSON.parse(localStorage.getItem('appData'));
 	    var appData = {
 		activities: [
-		    {id: "0", name: "Little Tokyo", type: 0, balance: 32},
-		    {id: "1", name: "Private lessons", type: 0, balance: 33},
-		    {id: "2", name: "Study", type: 2, balance: 33}
+		    {id: "0", name: "Little Tokyo", color: 0, type: 0, balance: 32},
+		    {id: "1", name: "Private lessons", color: 1, type: 0, balance: 33},
+		    {id: "2", name: "Study", color: 2, type: 2, balance: 33}
 		],
-		periods: [
-
-		],
+		periods: {
+		},
 	    };
 	    localStorage.setItem('appData', JSON.stringify(appData));
 	    return appData;
@@ -58,13 +56,13 @@ export default {
 	    
 	},
 	agenda: function(e) {
-	    router.push({ name: 'Agenda' });
+	    this.$router.push({ name: 'Agenda' });
 	},
 	settings: function(e) {
-	    router.push({ name: 'Settings' });
+	    this.$router.push({ name: 'Settings' });
 	},
 	stats: function(e) {
-	    router.push({ name: 'Stats' });
+	    this.$router.push({ name: 'Stats' });
 	},
     },
 }

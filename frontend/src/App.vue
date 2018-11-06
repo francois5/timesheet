@@ -24,7 +24,7 @@ export default {
 /* Overriding vue matherial theme colors */
 :root {
     --md-theme-default-primary: #34495e !important;
-    --md-theme-default-accent: #fff;/*#42b883;*/
+    --md-theme-default-accent: #42b883 !important;
     --md-theme-default-theme: light;
 }
 .md-field.md-theme-default.md-focused label {
@@ -46,6 +46,10 @@ export default {
 }
 .md-primary {
     background-color: #34495e !important;
+    color: #fff !important;
+}
+.md-accent {
+    background-color: #42b883 !important;
     color: #fff !important;
 }
 </style>

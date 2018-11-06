@@ -30,7 +30,6 @@
 
 <script>
 import axios from 'axios';
-import router from '../router'
 
 import TopBar from '../components/TopBar.vue'
 
@@ -65,7 +64,7 @@ export default {
 	    var user = JSON.parse(localStorage.getItem('user'));
 	    if(token && user && token !== 'null' && user !== 'null'
 	       && (user.kind === 'Client' || user.kind === 'Guest'))
-		router.push({ name: 'Dashboard' });
+		this.$router.push({ name: 'Dashboard' });
 	},
 	validatePassword: function() {
 	    this.passwordError = !this.password;
@@ -82,7 +81,7 @@ export default {
 	guestLogin: function(e) {
 	    localStorage.setItem('token', JSON.stringify({ token: 'faketoken' }));
 	    localStorage.setItem('user', JSON.stringify({ name: 'Bob', kind: 'Guest' }));
-	    router.push({ name: 'Dashboard' });
+	    this.$router.push({ name: 'Dashboard' });
 	},
 	submit: function(e) {
 	    if(this.validate()) this.login(e);
@@ -90,14 +89,14 @@ export default {
 	login: function(e) {
 	    localStorage.setItem('token', JSON.stringify({ token: 'faketoken' }));
 	    localStorage.setItem('user', JSON.stringify({ name: 'Bob', kind: 'Client' }));
-	    router.push({ name: 'Dashboard' });
+	    this.$router.push({ name: 'Dashboard' });
 /*	    axios.post(this.API_URL+'clientlogin', {
 		email: this.email,
 		password: this.password
 	    }).then(response => {
 		localStorage.setItem('token', JSON.stringify(response.data.token));
 		localStorage.setItem('user', JSON.stringify(response.data.user));
-		router.push({ name: 'Dashboard' });
+		this.$router.push({ name: 'Dashboard' });
 	    }).catch(e => {
 		if(e.response.status === 403) {
 		    if(e.response.data === "bad email")

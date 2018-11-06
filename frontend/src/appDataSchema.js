@@ -5,6 +5,7 @@ Schema of the application data that we get and store on server
 	{
 	    id: [int],
 	    name: [String],
+	    color: [int],
 	    type: [TYPE],
 	    balance: [BALANCE || day of month]
 	}
@@ -21,6 +22,11 @@ Schema of the application data that we get and store on server
 */
 
 const enums = {
+    COLORS: {
+	0: "#42b883",
+	1: "#0410f2",
+	2: "#bd2234"
+    },
     TYPE: {
 	HOURLY_INCOME: 0,
 	FIXED_INCOME: 1,

@@ -57,6 +57,16 @@
 	</md-field>
       </div>
 
+      <div class="md-layout-item md-xsmall-size-100 md-size-50">
+        <md-field>
+          <md-select v-model="activity.color" name="color" id="color" :placeholder="$t('activityColor')">
+	    <md-option :value="0" v-bind:style="{ backgroundColor: enums.COLORS['0'] }">{{$t('green')}}</md-option>
+            <md-option :value="1" v-bind:style="{ backgroundColor: enums.COLORS['1'] }">{{$t('blue')}}</md-option>
+            <md-option :value="2" v-bind:style="{ backgroundColor: enums.COLORS['2'] }">{{$t('red')}}</md-option>
+          </md-select>
+        </md-field>
+      </div>
+
       <div class="md-layout-item md-size-100">
 	<md-icon class="down-setting-icon-button icon-button close-button" @click.native="openCloseEdit">close</md-icon>
 	<md-icon class="down-setting-icon-button icon-button check-button" @click.native="edit">check</md-icon>
