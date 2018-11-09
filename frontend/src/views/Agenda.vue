@@ -52,13 +52,13 @@
     <md-content class="inner-calendar md-scrollbar">
       <div v-for="i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47]" class="agenda-row md-layout">
 	<md-content class="md-layout-item agenda-row hours agenda-row-content hours" :class="{ smallHours: smallScreen, xSmallHours: xSmallScreen }">{{$d(new Date(0, 0, 0, i/2, i%2!==0?30:0, 0), 'hour')}}</md-content>
-	<md-content draggable="true" :col="0" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable" v-bind:class="'color-'+calendar.displayablePeriods[i][0]"></md-content>
-	<md-content draggable="true" :col="1" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable" v-bind:class="'color-'+calendar.displayablePeriods[i][1]"></md-content>
-	<md-content draggable="true" :col="2" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable" v-bind:class="'color-'+calendar.displayablePeriods[i][2]"></md-content>
-	<md-content draggable="true" :col="3" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable" v-bind:class="'color-'+calendar.displayablePeriods[i][3]"></md-content>
-	<md-content draggable="true" :col="4" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable" v-bind:class="'color-'+calendar.displayablePeriods[i][4]"></md-content>
-	<md-content draggable="true" :col="5" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable" v-bind:class="'color-'+calendar.displayablePeriods[i][5]"></md-content>
-	<md-content draggable="true" :col="6" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable" v-bind:class="'color-'+calendar.displayablePeriods[i][6]"></md-content>
+	<md-content v-on:dblclick="dblclickOnCell(0, i)" draggable="true" :col="0" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable"></md-content>
+	<md-content v-on:dblclick="dblclickOnCell(1, i)" draggable="true" :col="1" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable"></md-content>
+	<md-content v-on:dblclick="dblclickOnCell(2, i)" draggable="true" :col="2" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable"></md-content>
+	<md-content v-on:dblclick="dblclickOnCell(3, i)" draggable="true" :col="3" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable"></md-content>
+	<md-content v-on:dblclick="dblclickOnCell(4, i)" draggable="true" :col="4" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable"></md-content>
+	<md-content v-on:dblclick="dblclickOnCell(5, i)" draggable="true" :col="5" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable"></md-content>
+	<md-content v-on:dblclick="dblclickOnCell(6, i)" draggable="true" :col="6" :row="i" class="md-layout-item agenda-row md-medium-size-13 agenda-row-content draggable"></md-content>
       </div>
     </md-content>
   </md-content>
@@ -106,9 +106,6 @@ export default {
 	},
 	mediumScreen() {
 	    return this.windowWidth >= 700;
-	},
-	displayablePeriods() {
-	    return this.calendar.displayablePeriods;
 	}
     },
     components: {
@@ -178,6 +175,49 @@ export default {
 		else
 		    that.setCellColor(cell);
 	    });
+	},
+	dblclickOnCell: function(col, row) {
+	    this.removePeriod(col, row, true, null);
+	},
+	removePeriod: function(col, row, firstCall, activityId) {
+	    var date = new Date(this.calendar.getStartOfWeek());
+	    date.setDate(date.getDate()+col);
+	    var dataModified = false;
+	    if(this.hasPeriod(this.appData.periods, date.getFullYear(), date.getMonth(), date.getDate(), Math.floor(row/2), row%2!==0?30:0)) {
+		var dataModified = true;
+		if(activityId === null || this.appData.periods[date.getFullYear()][date.getMonth()][date.getDate()][Math.floor(row/2)][row%2!==0?30:0] === activityId) {
+		    const thisActivityId = this.appData.periods[date.getFullYear()][date.getMonth()][date.getDate()][Math.floor(row/2)][row%2!==0?30:0];
+		    this.appData.periods[date.getFullYear()][date.getMonth()][date.getDate()][Math.floor(row/2)][row%2!==0?30:0] = null;
+		    if(row === 47) {
+			this.removePeriod(col+1, 0, false, thisActivityId);
+			this.removePeriod(col, row-1, false, thisActivityId);
+		    } else if(row === 0) {
+			this.removePeriod(col-1, 47, false, thisActivityId);
+			this.removePeriod(col, row+1, false, thisActivityId);
+		    } else {
+			this.removePeriod(col, row-1, false, thisActivityId);
+			this.removePeriod(col, row+1, false, thisActivityId);
+		    }
+		}
+	    }
+	    if(firstCall && dataModified) {
+		this.calendar.setPeriods(this.appData.periods);
+		localStorage.setItem('appData', JSON.stringify(this.appData));
+		this.setCellsColors();
+	    }
+	},
+	hasPeriod: function(periods, year, month, dayOfMonth, hour, min) {
+	    if(!periods[year])
+		return false;
+	    if(!periods[year][month])
+		return false;
+	    if(!periods[year][month][dayOfMonth])
+		return false;
+	    if(!periods[year][month][dayOfMonth][hour])
+		return false;
+	    if(!periods[year][month][dayOfMonth][hour][min])
+		return false;
+	    return true;
 	},
 	back: function(e) {
             this.$router.push({ name: 'Dashboard' });
@@ -266,15 +306,15 @@ export default {
 	},
 	today: function() {
 	    this.calendar.today();
-	    this.$forceUpdate();
+	    this.setCellsColors();
 	},
 	previousWeek: function() {
 	    this.calendar.previousWeek();
-	    this.$forceUpdate();
+	    this.setCellsColors();
 	},
 	nextWeek: function() {
 	    this.calendar.nextWeek();
-	    this.$forceUpdate();
+	    this.setCellsColors();
 	},
     },
 }
@@ -307,14 +347,14 @@ export default {
 }
 .agenda-row {
     width: 100%;
-    height: 30px;
+    height: 28px;
     margin-left: 2px;
     background-color: #fff;
 }
 .agenda-row-content {
     width: 100%;
     height: 26px;
-    margin-top: 4px;
+    margin-top: 2px;
     display: inline-flex;
     justify-content: center;
     align-items: center;

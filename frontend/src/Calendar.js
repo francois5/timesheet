@@ -2,6 +2,8 @@ export default class Calendar {
     constructor(periods) {
 	this.date = new Date();
 	this.displayableDaysOfMonth = this.getDisplayableDaysOfMonth();
+	this.displayablePeriods = null;
+	this.periods = null;
 	this.setPeriods(periods);
     }
 
@@ -59,16 +61,19 @@ export default class Calendar {
     today() {
 	this.date = new Date();
 	this.displayableDaysOfMonth = this.getDisplayableDaysOfMonth();
+	this.displayablePeriods = this.getDisplayablePeriods();
     }
 
     previousWeek() {
 	this.date.setDate(this.date.getDate() - 7);
 	this.displayableDaysOfMonth = this.getDisplayableDaysOfMonth();
+	this.displayablePeriods = this.getDisplayablePeriods();
     }
 
     nextWeek() {
 	this.date.setDate(this.date.getDate() + 7);
 	this.displayableDaysOfMonth = this.getDisplayableDaysOfMonth();
+	this.displayablePeriods = this.getDisplayablePeriods();
     }
 
     getMondayDayOfMonth() {
