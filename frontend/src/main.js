@@ -8,7 +8,7 @@ import router from './router';
 import VueI18n from 'vue-i18n';
 
 import "vue-material-design-icons/styles.css";
-import { MdButton, MdToolbar, MdContent, MdField, MdMenu, MdList, MdDialog, MdDialogConfirm } from 'vue-material/dist/components';
+import { MdButton, MdToolbar, MdContent, MdField, MdMenu, MdList, MdDialog, MdDialogConfirm, MdDatepicker } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/default.css';
 
@@ -20,7 +20,7 @@ Vue.use(MdMenu);
 Vue.use(MdList);
 Vue.use(MdDialog);
 Vue.use(MdDialogConfirm);
-
+Vue.use(MdDatepicker);
 Vue.use(VueI18n);
 
 Vue.config.productionTip = false;

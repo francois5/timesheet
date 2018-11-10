@@ -76,8 +76,17 @@ export default class Calendar {
 	this.displayablePeriods = this.getDisplayablePeriods();
     }
 
+    setWeek(date) {
+	this.date = date;
+	this.displayableDaysOfMonth = this.getDisplayableDaysOfMonth();
+	this.displayablePeriods = this.getDisplayablePeriods();
+    }
+
     getMondayDayOfMonth() {
-	return this.date.getDate() - (this.date.getDay() - 1);
+	let dayOfWeek = this.date.getDay() - 1;
+	if(dayOfWeek === -1)
+	    dayOfWeek = 6;
+	return this.date.getDate() - dayOfWeek;
     }
 
     getSundayDayOfMonth() {

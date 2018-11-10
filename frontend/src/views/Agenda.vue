@@ -3,7 +3,7 @@
   <top-bar v-bind:loggedIn="true" v-bind:dashboard="false" v-bind:agenda="true" v-bind:startDate="this.calendar.getStartWeek()" v-bind:endDate="this.calendar.getEndWeek()" v-bind:noLocalChanger="true" v-bind:xSmallScreen="xSmallScreen" v-on:back="back" v-on:today="today" v-on:previous="previousWeek" v-on:next="nextWeek"></top-bar>
   <md-content class="inner-screen md-scrollbar">
     <div class="md-layout">
-      <div class="md-layout-item days"><md-content class="md-primary header-row"></md-content></div>
+      <div class="md-layout-item days"><md-content class="md-primary header-row"><md-datepicker v-model="selectedDate" md-immediately /></md-content></div>
       <div class="md-layout-item days">
 	<md-content v-if=!mediumScreen class="md-primary small-header-row"><div class="smallDayOfWeek">{{$t('mon')}}</div><h4 class="smallDayOfWeek">{{calendar.displayableDaysOfMonth[0]}}</h4></md-content>
 	<md-content v-if=mediumScreen class="md-primary header-row"><span class="dayOfWeek">{{$t('mon')}}</span><h4 class="dayOfWeek">{{calendar.displayableDaysOfMonth[0]}}</h4></md-content>
@@ -95,6 +95,15 @@ export default {
 	    newPeriodDialogOpen: false,
 	    newPeriodData: {},
 	    activityId: null,
+	    selectedDate: null
+	}
+    },
+    watch: {
+	selectedDate: function(newDate, oldDate) {
+	    if(oldDate && newDate.getTime() !== oldDate.getTime())
+		this.setWeek(newDate);
+	    let button = document.querySelector(".md-datepicker>button");
+	    if(button) button.style.display = 'none';
 	}
     },
     computed: {
@@ -119,6 +128,19 @@ export default {
 	    this.widthListener();
 	});
 	this.initCells();
+	document.querySelector(".md-datepicker>input").style.display = 'none';
+	this.$material.locale = {
+	    startYear: 1900,
+	    endYear: 2099,
+	    dateFormat: this.$t('dateFormat'),
+	    days: [this.$t('sunday'), this.$t('monday'), this.$t('tuesday'), this.$t('wednesday'), this.$t('thursday'), this.$t('friday'), this.$t('saturday')],
+	    shortDays: [this.$t('sun'), this.$t('mon'), this.$t('tue'), this.$t('wed'), this.$t('thu'), this.$t('fri'), this.$t('sat')],
+	    shorterDays: [this.$t('shorterSun'), this.$t('shorterMon'), this.$t('shorterTue'), this.$t('shorterWed'), this.$t('shorterThu'), this.$t('shorterFri'), this.$t('shorterSat')],
+	    months: [this.$t('january'), this.$t('february'), this.$t('march'), this.$t('april'), this.$t('may'), this.$t('june'), this.$t('july'), this.$t('august'), this.$t('september'), this.$t('october'), this.$t('november'), this.$t('december')],
+	    shortMonths: [this.$t('jan'), this.$t('feb'), this.$t('mar'), this.$t('apr'), this.$t('may'), this.$t('june'), this.$t('july'), this.$t('aug'), this.$t('sep'), this.$t('oct'), this.$t('nov'), this.$t('dec')],
+	    shorterMonths: [this.$t('shorterJan'), this.$t('shorterFeb'), this.$t('shorterMar'), this.$t('shorterApr'), this.$t('shorterMay'), this.$t('shorterJun'), this.$t('shorterJul'), this.$t('shorterAug'), this.$t('shorterSep'), this.$t('shorterOct'), this.$t('shorterNov'), this.$t('shorterDec')],
+	    firstDayOfAWeek: 1
+	}
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.widthListener);
@@ -316,6 +338,10 @@ export default {
 	    this.calendar.nextWeek();
 	    this.setCellsColors();
 	},
+	setWeek: function() {
+	    this.calendar.setWeek(this.selectedDate);
+	    this.setCellsColors();
+	},
     },
 }
 </script>
@@ -408,5 +434,8 @@ h4.dayOfWeek {
 .dialog-content {
     margin-left: 20px;
     margin-right: 20px;
+}
+div.md-datepicker::after {
+    display: none;
 }
 </style>
