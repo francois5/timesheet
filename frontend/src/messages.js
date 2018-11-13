@@ -22,6 +22,10 @@ const messages = {
 	agenda: 'Calendar',
 	settings: 'Settings',
 	stats: 'Stats',
+	hour: 'Hour',
+	min: 'Min',
+	beginDate: 'Start of the period',
+	endDate: 'End of the period',
 	//Settings view
 	name: 'Name',
 	activityType: 'Activity type',
@@ -123,6 +127,10 @@ const messages = {
 	agenda: 'Calendrier',
 	settings: 'Paramètres',
 	stats: 'Statistiques',
+	hour: 'Heure',
+	min: 'Minute',
+	beginDate: 'Début de la période',
+	endDate: 'Fin de la période',
 	//Settings view
 	name: 'Nom',
 	activityType: 'Type d\'activité',

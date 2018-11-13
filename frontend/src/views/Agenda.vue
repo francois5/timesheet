@@ -48,7 +48,7 @@
         <md-button class="md-primary" @click.native="newPeriodConfirm">{{$t('comfirm')}}</md-button>
       </md-dialog-actions>
     </md-dialog>
-    
+
     <md-content class="inner-calendar md-scrollbar">
       <div v-for="i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47]" class="agenda-row md-layout">
 	<md-content class="md-layout-item agenda-row hours agenda-row-content hours" :class="{ smallHours: smallScreen, xSmallHours: xSmallScreen }">{{$d(new Date(0, 0, 0, i/2, i%2!==0?30:0, 0), 'hour')}}</md-content>
@@ -72,6 +72,7 @@ import axios from 'axios';
 import TopBar from '../components/TopBar.vue'
 import Calendar from '../Calendar.js'
 import enums from '../appDataSchema.js';
+import {addPeriod} from '../appDataSchema.js';
 
 export default {
     name: 'Agenda',
@@ -286,44 +287,22 @@ export default {
 	    else
 		this.setCellsColors();
 	},
-	putNewPeriod: function(activityId, startCol, startRow, endCol, endRow) {
+	getDateFormGridPos: function(col, row) {
 	    var date = new Date(this.calendar.getStartOfWeek());
-	    if(endCol < startCol) {
-		let tmp = endCol;
-		endCol = startCol;
-		startCol = tmp;
-		tmp = endRow
-		endRow = startRow;
-		startRow = tmp;
-	    }
-	    date.setDate(date.getDate()+startCol);
-	    for(var col = startCol; col <= endCol; ++col) {
-		let colEndRow = endRow;
-		let colStartRow = startRow;
-		if(col !== startCol && col === endCol)
-		    colStartRow = 0;
-		else if(col < endCol)
-		    colEndRow = 47;
-		else if(endRow < startRow) {
-		    let tmp = colEndRow;
-		    colEndRow = colStartRow;
-		    colStartRow = tmp;
-		}
-		for(var row = colStartRow; row <= colEndRow; ++row) {
-		    if(!this.appData.periods[date.getFullYear()])
-			this.appData.periods[date.getFullYear()] = {};
-		    if(!this.appData.periods[date.getFullYear()][date.getMonth()])
-			this.appData.periods[date.getFullYear()][date.getMonth()] = {};
-		    if(!this.appData.periods[date.getFullYear()][date.getMonth()][date.getDate()])
-			this.appData.periods[date.getFullYear()][date.getMonth()][date.getDate()] = {};
-		    if(!this.appData.periods[date.getFullYear()][date.getMonth()][date.getDate()][Math.floor(row/2)])
-			this.appData.periods[date.getFullYear()][date.getMonth()][date.getDate()][Math.floor(row/2)] = {};
-		    this.appData.periods[date.getFullYear()][date.getMonth()][date.getDate()][Math.floor(row/2)][row%2!==0?30:0] = activityId.toString();
-		    this.calendar.setPeriods(this.appData.periods);
-		    localStorage.setItem('appData', JSON.stringify(this.appData));
-		}
-		date.setDate(date.getDate()+1);
-	    }
+	    date.setDate(date.getDate()+col);
+	    date.setHours(Math.floor(row/2));
+	    date.setMinutes(row%2!==0?30:0);
+	    return date;
+	},
+	putNewPeriod: function(activityId, startCol, startRow, endCol, endRow) {
+	    var beginDate = this.getDateFormGridPos(startCol, startRow);
+	    var endDate = this.getDateFormGridPos(endCol, endRow);
+	    if(beginDate.getTime() > endDate.getTime())
+		addPeriod(this.appData.periods, activityId.toString(), endDate, beginDate);
+	    else
+		addPeriod(this.appData.periods, activityId.toString(), beginDate, endDate);
+	    this.calendar.setPeriods(this.appData.periods);
+	    localStorage.setItem('appData', JSON.stringify(this.appData));
 	    this.setCellsColors();
 	},
 	today: function() {

@@ -10,16 +10,56 @@ Schema of the application data that we get and store on server
 	    balance: [BALANCE || day of month]
 	}
     ],
-    periods: [
-	{
-	    id: [int],
-	    activity: [int],
-	    start: [timestamp],
-	    end: [timestamp]
-	}
-    ]
+    periods: {
+        year(YYYY): {
+            month(MM): {
+                dayOfMonth(DD): {
+		    hour(int): {
+		        min("0" or "30"): activityId
+		    }
+		}
+            }
+        }
+    }
 }
 */
+
+export function addPeriod(periods, activityId, beginDate, endDate) {
+    let date = beginDate;
+    while(date.getTime() <= endDate.getTime()) {
+	let year = date.getFullYear();
+	let month = date.getMonth();
+	let day = date.getDate();
+	let lastPeriod = false;
+	while(date.getTime() <= endDate.getTime() && !lastPeriod) {
+	    let hour = date.getHours();
+	    let mins = date.getMinutes();
+
+	    if(!periods[year])
+		periods[year] = {};
+	    if(!periods[year][month])
+		periods[year][month] = {};
+	    if(!periods[year][month][day])
+		periods[year][month][day] = {};
+	    if(!periods[year][month][day][hour])
+		periods[year][month][day][hour] = {};
+	    periods[year][month][day][hour][mins] = activityId;
+
+	    if(date.getHours() === 23 && date.getMinutes() === 30)
+		lastPeriod = true;
+	    if(date.getMinutes() === 0)
+		date.setMinutes(30);
+	    else {
+		date.setHours(date.getHours() + 1);
+		date.setMinutes(0);
+	    }
+	}
+	if(!lastPeriod)
+	    date.setDate(date.getDate() + 1);
+	date.setHours(0);
+	date.setMinutes(0);
+    }
+};
 
 const enums = {
     COLORS: {
