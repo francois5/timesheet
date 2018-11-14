@@ -13,6 +13,11 @@ const dateTimeFormats = {
 	    hour: 'numeric',
 	    minute: 'numeric',
 	    hour12: false // todo solve the lineHeight android problem
+	},
+	dayPickerDate: {
+	    weekday: 'short',
+	    day: 'numeric',
+	    month: 'short'
 	}
     },
     'fr': {
@@ -28,6 +33,11 @@ const dateTimeFormats = {
 	hour: {
 	    hour: 'numeric',
 	    minute: 'numeric'
+	},
+	dayPickerDate: {
+	    weekday: 'short',
+	    day: 'numeric',
+	    month: 'short'
 	}
     }
 };

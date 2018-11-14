@@ -2,9 +2,14 @@
   <div id="datetimepicker">
     <div class="md-layout">
       <div class="md-layout-item md-size-45">
-	<md-content class="">
+	<md-field>
+          <md-select v-model="day" name="day" id="day">
+	    <md-option v-for="d in days" :key="d.getTime()" :value="d.getTime()">{{$d(d, 'dayPickerDate')}}</md-option>
+          </md-select>
+        </md-field>
+	<!--<md-content class="">
 	  <md-datepicker v-model="localDate" md-immediately/>
-	</md-content>
+	</md-content>-->
       </div>
       <div class="md-layout-item md-size-5"></div>
       <div class="md-layout-item md-size-25">
@@ -32,10 +37,23 @@ export default {
     props: ['date'],
     data () {
         return {
-	    localDate: this.date,
+	    //localDate: this.date,
+	    day: this.date.getTime(),
 	    hour: null,
 	    min: null,
         }
+    },
+    computed: {
+	days: function() {
+	    let date = new Date(this.date);
+	    date.setDate(date.getDate()-10);
+	    let days = [];
+	    while(date.getTime() <= this.date.getTime()+(1000*60*60*24*3)) {
+		days.push(new Date(date));
+		date.setDate(date.getDate()+1);
+	    }
+	    return days;
+	}
     },
     methods: {
 	emitUpdate: function() {
