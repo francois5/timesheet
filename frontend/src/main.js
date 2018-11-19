@@ -23,6 +23,8 @@ Vue.use(MdDialogConfirm);
 Vue.use(MdDatepicker);
 Vue.use(VueI18n);
 
+Vue.use(VueCharts);
+
 Vue.config.productionTip = false;
 
 Vue.mixin({

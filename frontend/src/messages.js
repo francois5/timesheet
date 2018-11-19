@@ -40,6 +40,8 @@ const messages = {
 	green: 'Green',
 	blue: 'Blue',
 	red: 'Red',
+	//Stats view
+	timePassedDuringCurrentMonthByActivity: 'Time passed by activity during current month',
 	//Agenda view
 	shorterMon: 'M',
 	shorterTue: 'T',
@@ -145,6 +147,8 @@ const messages = {
 	green: 'Vert',
 	blue: 'Bleu',
 	red: 'Rouge',
+	//Stats view
+	timePassedDuringCurrentMonthByActivity: 'Temps passé par activité durant le mois en cours',
 	//Agenda view
 	shorterMon: 'L',
 	shorterTue: 'M',

@@ -57,7 +57,7 @@ export default {
     },
     methods: {
 	emitUpdate: function() {
-	    let date = new Date(this.localDate)
+	    let date = new Date(this.day)
 	    date.setHours(this.hour)
 	    date.setMinutes(this.min)
 	    this.$emit('update', date)
